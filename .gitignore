@@ -41,7 +41,7 @@ venv.bak/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-*.ipynb
+# *.ipynb  # Commented out to include medical_2D_slice_visualization.ipynb
 
 # PyCharm
 .idea/
