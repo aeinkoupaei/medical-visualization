@@ -1,0 +1,46 @@
+# Core dependencies for Interactive 3D Medical Volume Viewer
+# ========================================================================
+# Platform: Cross-platform (Windows, Linux, macOS)
+# Note: Optimized for Apple Silicon on macOS
+# Python: 3.8+
+
+# Numerical computing
+numpy>=1.20.0
+
+# 3D visualization with automatic GPU acceleration
+# (Metal on macOS, DirectX/OpenGL on Windows/Linux)
+pyvista>=0.40.0
+
+# Medical imaging file format support
+nibabel>=3.2.0
+
+# Optional: For interactive HTML export
+# ========================================================================
+# These are optional but highly recommended for saving interactive
+# visualizations that can be shared in web browsers
+#
+# To install HTML export support, run:
+#   pip install -r requirements.txt
+#
+# Or install selectively:
+#   pip install nest-asyncio trame trame-vtk trame-vuetify
+
+nest-asyncio>=1.5.6
+trame>=2.5.0
+trame-vtk>=2.5.0
+trame-vuetify>=2.3.0
+
+# Additional useful dependencies
+# ========================================================================
+# These are automatically installed as dependencies of the above packages,
+# but listed here for reference:
+
+# VTK (Visualization Toolkit) - installed with pyvista
+# vtk>=9.2.0
+
+# Image processing
+# pillow>=9.0.0
+
+# For better array handling
+# scipy>=1.7.0  # Optional, uncomment if needed
+
