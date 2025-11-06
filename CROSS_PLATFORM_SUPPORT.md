@@ -196,7 +196,6 @@ Exported HTML files:
 
 For platform-specific issues:
 - **GitHub Issues:** [Report bugs or request features](https://github.com/aeinkoupaei/medical-visualization/issues)
-- **Discussions:** [Ask questions](https://github.com/aeinkoupaei/medical-visualization/discussions)
 
 ---
 
