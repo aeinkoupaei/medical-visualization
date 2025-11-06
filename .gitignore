@@ -73,6 +73,8 @@ screenshot.png
 # Output files (HTML exports can be large)
 # Comment out if you want to track HTML exports
 output/*.html
+# Exception: Include one sample HTML file
+!output/Multiplaner_1.html
 
 # Temporary files
 *.tmp
