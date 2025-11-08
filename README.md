@@ -65,7 +65,7 @@ This project provides two complementary visualization tools:
 **See [NOTEBOOK_GUIDE.md](NOTEBOOK_GUIDE.md) for detailed notebook documentation.**
 
 **To explore or run the code interactively, open it in Google Colab:**
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aeinkoupaei/medical-visualization/blob/main/notebook.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aeinkoupaei/medical-visualization/blob/main/scripts/medical_2D_slice_visualization.ipynb)
 
 ## Requirements
 
