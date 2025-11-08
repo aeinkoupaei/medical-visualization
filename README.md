@@ -63,6 +63,7 @@ This project provides two complementary visualization tools:
 **Best for:** Data screening, batch export, and publication figures
 
 **See [NOTEBOOK_GUIDE.md](NOTEBOOK_GUIDE.md) for detailed notebook documentation.**
+**See [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aeinkoupaei/medical-visualization/blob/main/notebook.ipynb)
 
 ## Requirements
 
