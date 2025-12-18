@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  medical-viz:
+    build: .
+    container_name: medical-visualization-platform
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+

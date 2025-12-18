@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Visualization Platform</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 Medical Visualization Platform</h1>
+            <p>Professional 3D medical imaging visualization</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Upload Section -->
+            <div class="card">
+                <h2>📁 Upload Medical Image</h2>
+                <input type="file" id="fileInput" accept=".nii,.gz,.npy">
+                <button id="uploadBtn" class="btn-primary">Upload File</button>
+                <div id="fileInfo" class="info-box"></div>
+
+                <hr style="margin: 20px 0;">
+                <h3>🔀 Optional: Upload second file to compare</h3>
+                <input type="file" id="fileInputB" accept=".nii,.gz,.npy">
+                <button id="uploadBtnB" class="btn-secondary">Upload Second File</button>
+                <div id="fileInfoB" class="info-box"></div>
+            </div>
+
+            <!-- Visualization Controls -->
+            <div class="card" id="controls" style="display: none;">
+                <h2>⚙️ Visualization Settings</h2>
+                
+                <div class="control-group">
+                    <label for="vizMode">Mode:</label>
+                    <select id="vizMode">
+                        <option value="slice">2D Slice View</option>
+                        <option value="3d">3D Volume Rendering</option>
+                        <option value="3plane">3-Plane View</option>
+                    </select>
+                </div>
+
+                <!-- 2D Slice Controls (only axis selector now) -->
+                <div id="sliceControls">
+                    <div class="control-group">
+                            <label for="axisSelect">Axis:</label>
+                        <select id="axisSelect">
+                            <option value="2">Axial (Z)</option>
+                            <option value="1">Coronal (Y)</option>
+                            <option value="0">Sagittal (X)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 3-Plane Controls (X/Y/Z indices) -->
+                <!-- (numeric inputs removed; per-axis sliders live next to each view below) -->
+
+                <!-- 3D Controls -->
+                <div id="volumeControls" style="display: none;">
+                    <div class="control-group">
+                        <label for="renderModeSelect">3D Rendering Method:</label>
+                        <select id="renderModeSelect">
+                            <option value="slices" selected>Orthogonal Slices (Recommended - Fast)</option>
+                            <option value="isosurface">Isosurface (Lightweight 3D)</option>
+                            <option value="volume">Full Volume (Slow - High Memory)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="opacitySelect">Opacity:</label>
+                        <select id="opacitySelect">
+                            <option value="sigmoid_1">Very Transparent</option>
+                            <option value="sigmoid_2">Transparent</option>
+                            <option value="sigmoid_3" selected>Medium</option>
+                            <option value="sigmoid_5">Balanced</option>
+                            <option value="sigmoid_10">Opaque</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Common Controls -->
+                <div class="control-group">
+                    <label for="cmapSelect">Colormap:</label>
+                    <select id="cmapSelect">
+                        <option value="gray" selected>Gray</option>
+                        <option value="bone">Bone</option>
+                        <option value="viridis">Viridis</option>
+                        <option value="hot">Hot</option>
+                        <option value="cool">Cool</option>
+                        <option value="plasma">Plasma</option>
+                    </select>
+                </div>
+
+                <button id="renderBtn" class="btn-primary">🚀 Generate Visualization</button>
+                <button id="compareBtn" class="btn-secondary" disabled>🔍 Compare Two Slices</button>
+                <button id="compare3DBtn" class="btn-secondary" disabled>🧊 Compare Two 3D Volumes</button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="card">
+                <h2>📊 Visualization Output</h2>
+                <div id="loading" class="loading" style="display: none;">
+                    Generating visualization...
+                </div>
+
+                <!-- Single-volume 2D slice view -->
+                <div id="singleSliceView" class="viz-section" style="display: none;">
+                    <div id="sliceSliderContainer" class="slider-row">
+                        <label for="sliceSlider">Slice:</label>
+                        <input type="range" id="sliceSlider" min="0" value="0" step="1">
+                        <input type="number" id="sliceIndex" min="0" value="0">
+                    </div>
+                    <div class="image-row">
+                        <img id="singleSliceImage" class="viz-image" alt="Slice visualization">
+                    </div>
+                </div>
+
+                <!-- Two-volume 2D comparison view (independent sliders) -->
+                <div id="compareSliceView" class="viz-section" style="display: none;">
+                    <div class="compare-grid">
+                        <div class="compare-panel">
+                            <h3>Volume A</h3>
+                            <div class="slider-row">
+                                <label for="sliceSliderA">Slice:</label>
+                                <input type="range" id="sliceSliderA" min="0" value="0" step="1">
+                                <input type="number" id="sliceIndexA" min="0" value="0">
+                            </div>
+                            <div class="image-row">
+                                <img id="compareImageA" class="viz-image" alt="Volume A slice">
+                            </div>
+                        </div>
+                        <div class="compare-panel">
+                            <h3>Volume B</h3>
+                            <div class="slider-row">
+                                <label for="sliceSliderB">Slice:</label>
+                                <input type="range" id="sliceSliderB" min="0" value="0" step="1">
+                                <input type="number" id="sliceIndexB" min="0" value="0">
+                            </div>
+                            <div class="image-row">
+                                <img id="compareImageB" class="viz-image" alt="Volume B slice">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3-plane (axial, coronal, sagittal) view -->
+                <div id="threePlaneView" class="viz-section" style="display: none;">
+                    <div class="three-plane-grid">
+                        <div class="plane-panel">
+                            <h3>Sagittal (X)</h3>
+                            <div class="slider-row">
+                                <label for="sliderX">Slice:</label>
+                                <input type="range" id="sliderX" min="0" value="0" step="1">
+                                <input type="number" id="sliceX" min="0" value="0" aria-label="Sagittal slice (X)">
+                            </div>
+                            <div class="image-row">
+                                <img id="planeImageX" class="viz-image" alt="Sagittal view">
+                            </div>
+                        </div>
+                        <div class="plane-panel">
+                            <h3>Coronal (Y)</h3>
+                            <div class="slider-row">
+                                <label for="sliderY">Slice:</label>
+                                <input type="range" id="sliderY" min="0" value="0" step="1">
+                                <input type="number" id="sliceY" min="0" value="0" aria-label="Coronal slice (Y)">
+                            </div>
+                            <div class="image-row">
+                                <img id="planeImageY" class="viz-image" alt="Coronal view">
+                            </div>
+                        </div>
+                        <div class="plane-panel">
+                            <h3>Axial (Z)</h3>
+                            <div class="slider-row">
+                                <label for="sliderZ">Slice:</label>
+                                <input type="range" id="sliderZ" min="0" value="0" step="1">
+                                <input type="number" id="sliceZ" min="0" value="0" aria-label="Axial slice (Z)">
+                            </div>
+                            <div class="image-row">
+                                <img id="planeImageZ" class="viz-image" alt="Axial view">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D interactive container (iframe) -->
+                <div id="threeDView" class="viz-section" style="display: none;">
+                    <div id="threeDContainer"></div>
+                </div>
+
+                <!-- Generic output fallback for errors / messages -->
+                <div id="output">
+                    <p class="placeholder">Upload a file and generate visualization to see results</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+
